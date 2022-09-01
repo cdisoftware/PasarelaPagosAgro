@@ -48,7 +48,7 @@ app.get('/webhookagro', (req, res) => {
     // });
 
     sql.on('error', err => {        
-        console.log("Sql database connection error " ,err);
+        console.log("Sql database connection error: " ,err);
     })
 })
 
