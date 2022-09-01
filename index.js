@@ -38,7 +38,7 @@ app.get('/webhookagro', (req, res) => {
             ",'" + status.id + "','" + status.nombre + "','" + persona.id + "','" + persona.firstname + "','" + persona.lastname + "','" + persona.identification + "','" + persona.email + "','" + persona.phone + "','" + body.paymentmethod + "','" + body.nombre + "','" + bodystring + "')").then(valInsert => {
             //Posterior al realizar la insercion, si esta se realizo correctamente cerramos nuestra conexion a la BD, esto para evitar hilos no controlados
             ValConCorrecta.close();
-            console.log('Transacción realizada \n')
+            console.log('Transacción realizada, transacción:', body.id + ' ' + persona.firstname + ' ' + persona.lastname + ' - ' + persona.identification + '\n')
             console.log('Conexión BD finalizada \n')
                 //Retornamos respuesta de proceso realizado correctamente
             res.send({
@@ -46,17 +46,17 @@ app.get('/webhookagro', (req, res) => {
             })
         }, ValNoInsert => {
             //En caso de presentarse error en la insercion se realiza el siguiente proceso
-            console.log('Transacción no insertada \n')
-            console.log(ValNoInsert)
+            console.log('Transacción no insertada, transacción:', body.id + ' ' + persona.firstname + ' ' + persona.lastname + ' - ' + persona.identification + '\n')
+            console.log(ValNoInsert.originalError.info)
                 //Igualmente retornamos respuesta para finalizar el hilo, si no finalizamos quedara siempre EN PROCESO y se toteara por timeout afectando al servidor
             res.send({
-                resultado: 'Transacción no realizada, validar error en valores del body'
+                resultado: 'Transacción no realizada, validar valores del body'
             })
         })
     }, ValConErrada => {
         //En caso de que no se logre la conexion a BD se realiza el siguiente proceso
-        console.log('Conexión BD no creada, se presentaron errores \n')
-        console.log(ValConErrada)
+        console.log('Conexión BD no creada, se presentaron errores transacción:', body.id + ' ' + persona.firstname + ' ' + persona.lastname + ' - ' + persona.identification + '\n')
+        console.log(ValConErrada.originalError)
             //Igualmente retornamos respuesta para finalizar con el hilo, si no finalizamos quedara siempre EN PROCESO y se toteara por timeout afectando al servidor
         res.send({
             resultado: 'Conexión BD no creada, se presentaron errores'
