@@ -1,65 +1,87 @@
 const express = require('express')
+const fs = require('fs');
+const https = require('https');
 const bodyparser = require('body-parser')
 const app = express()
-const port = process.env.port || 3000
+const port = 3000
 const sql = require('mssql')
 app.use(bodyparser.urlencoded({ extended: false }))
 app.use(bodyparser.json())
 
-// Se inicializa el WebHook para que siempre este escuchando en el puerto especificado en la linea 4, validar regla de entrada en el firewall (debe estar creada con el mismo puerto)
-app.listen(port, () => {
-    console.log('Webhook corriendo en el puerto ' + port + "\n")
-})
+var options = {
+    key: fs.readFileSync('./certificado/PrivateKey.key'),
+    cert: fs.readFileSync('./certificado/apoya2_org.crt'),
+    ca: [
+        fs.readFileSync('./certificado/apoya2_org.ca-bundle'),
+        fs.readFileSync('./certificado/apoya2_org.p7b')
+    ]
+};
 
 // Cada vez que realicen una peticion al WebHook con el path /webhookagro Iniciara este proceso
-app.get('/webhookagro', (req, res) => {
-    console.log('Bienvenido al WebHook-AgroApoya2 \n')
+app.post('/webhookagro', (req, res) => {
+    try {
+        console.log('Bienvenido al WebHook-AgroApoya2 \n')
         //Recuperamos valores del body enviados por el tercero que llamo al webhook
-    var body = req.body;
-    var bodystring = JSON.stringify(body);
-    var status = body.idstatus
-    var persona = body.idperson
+        var body = req.body;
+        var bodystring = JSON.stringify(body);
+        var status = body.idstatus
+        var persona = body.idperson
         //Instanciamos conexion a base de datos
         //Propiedad: encrypt tiene que estar en false a menos que nos conectemos a AZURE
         //Propiedad: trustServerCertificate debe estar true para que el proceso permita conexion sin necesidad de certificado SSL
-    const pool = sql.connect({
-        user: 'Cdi 2017',
-        password: 'Cdi.2017*',
-        server: '34.215.136.170',
-        database: 'AgroApoya2',
-        options: {
-            encrypt: false,
-            trustServerCertificate: true
-        }
-    }).then(ValConCorrecta => {
-        //En caso de que se logre la conexion se realiza el siguiente proceso
-        console.log('Conexión BD creada \n')
-        const Insercion = sql.query("Insert into Trans_Pago_Agro values('" + body.id + "','" + body.ammount + "','" + body.externalorder + "','" + body.ip + "','" + body.fullname + "','" + body.additionaldata + "'" +
-            ",'" + status.id + "','" + status.nombre + "','" + persona.id + "','" + persona.firstname + "','" + persona.lastname + "','" + persona.identification + "','" + persona.email + "','" + persona.phone + "','" + body.paymentmethod + "','" + body.nombre + "','" + bodystring + "')").then(valInsert => {
-            //Posterior al realizar la insercion, si esta se realizo correctamente cerramos nuestra conexion a la BD, esto para evitar hilos no controlados
-            ValConCorrecta.close();
-            console.log('Transacción realizada, transacción:', body.id + ' ' + persona.firstname + ' ' + persona.lastname + ' - ' + persona.identification + '\n')
-            console.log('Conexión BD finalizada \n')
+        const pool = sql.connect({
+            user: 'Cdi 2017',
+            password: 'Cdi.2017*',
+            server: '34.215.136.170',
+            database: 'Agroapoya2Prod',
+            options: {
+                encrypt: false,
+                trustServerCertificate: true,
+                requestTimeout: 60000
+            }
+
+        }).then(ValConCorrecta => {
+            let fecha = new Date();
+            //En caso de que se logre la conexion se realiza el siguiente proceso           
+
+            console.log('Conexión BD creada ' + fecha.toLocaleString() + '\n');
+            var QueryI = "Insert into Trans_Pago_Agro (id,Ammount,Externalorder,IPP,Fullname,Idstatus,NombreStatus,IdPersona,Firstname,Lastname,Identification,Email,Phone,Bodyrequest,FechaRegistro) values('" + body.id + "','" + body.amount + "','" + body.externalorder + "','" + body.ip + "','" + body.fullname + "','" + status.id + "','" + status.nombre + "','" + persona.id + "','" + persona.firstname + "','" + persona.lastname + "','" + persona.identification + "','" + persona.email + "','" + persona.phone + "','" + bodystring + "','" + fecha.toLocaleString() + "')";
+            const Insercion = sql.query(QueryI).then(valInsert => {
+                //Posterior al realizar la insercion, si esta se realizo correctamente cerramos nuestra conexion a la BD, esto para evitar hilos no controlados
+                ValConCorrecta.close();
+                console.log('Transacción realizada, transacción:', body.id + ' ' + persona.firstname + ' ' + persona.lastname + ' - ' + persona.identification + ' - ' + status.nombre + '\n')
+                console.log('Conexión BD finalizada ' + fecha.toLocaleString() + '\n')
                 //Retornamos respuesta de proceso realizado correctamente
-            res.send({
-                resultado: 'Transacción realizada'
-            })
-        }, ValNoInsert => {
-            //En caso de presentarse error en la insercion se realiza el siguiente proceso
-            console.log('Transacción no insertada, transacción:', body.id + ' ' + persona.firstname + ' ' + persona.lastname + ' - ' + persona.identification + '\n')
-            console.log(ValNoInsert.originalError.info)
+                res.send({
+                    resultado: '200'
+                })
+            }, ValNoInsert => {
+                //En caso de presentarse error en la insercion se realiza el siguiente proceso
+                console.log('Transacción no insertada, transacción:', body.id + ' ' + persona.firstname + ' ' + persona.lastname + ' - ' + persona.identification + ' - ' + status.nombre + '\n')
+                console.log(ValNoInsert.originalError.info)
                 //Igualmente retornamos respuesta para finalizar el hilo, si no finalizamos quedara siempre EN PROCESO y se toteara por timeout afectando al servidor
+                res.send({
+                    resultado: '500'
+                })
+            })
+        }, ValConErrada => {
+            //En caso de que no se logre la conexion a BD se realiza el siguiente proceso
+            console.log('Conexión BD no creada, se presentaron errores transacción:', body.id + ' ' + persona.firstname + ' ' + persona.lastname + ' - ' + persona.identification + '\n')
+            console.log(ValConErrada.originalError)
+            //Igualmente retornamos respuesta para finalizar con el hilo, si no finalizamos quedara siempre EN PROCESO y se toteara por timeout afectando al servidor
             res.send({
-                resultado: 'Transacción no realizada, validar valores del body'
+                resultado: '500'
             })
         })
-    }, ValConErrada => {
-        //En caso de que no se logre la conexion a BD se realiza el siguiente proceso
-        console.log('Conexión BD no creada, se presentaron errores transacción:', body.id + ' ' + persona.firstname + ' ' + persona.lastname + ' - ' + persona.identification + '\n')
-        console.log(ValConErrada.originalError)
-            //Igualmente retornamos respuesta para finalizar con el hilo, si no finalizamos quedara siempre EN PROCESO y se toteara por timeout afectando al servidor
-        res.send({
-            resultado: 'Conexión BD no creada, se presentaron errores'
-        })
-    })
+    } catch (error) {
+        console.error("ERROR TRY: " + error);
+        res.status(500).send({ resultado: '500' });
+    }
 })
+
+// Se inicializa el WebHook para que siempre este escuchando en el puerto especificado en la variable port, validar regla de entrada en el firewall (debe estar creada con el mismo puerto)
+https.createServer(options, app).listen(port, () => {
+    console.log('Webhook corriendo en el puerto ' + port + "\n")
+});
+
+

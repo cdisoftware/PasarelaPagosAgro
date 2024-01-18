@@ -1,0 +1,36 @@
+2022-09-06 09:21:28 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Administrator\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Administrator\Desktop\WebHookV2\PasarelaPagosAgro\index.js --log "PasarelaAgroapoyados wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2022-09-06 09:21:28 - Started 4832
+2022-09-06 09:23:05 - Stopping pasarelaagroapoyados.exe
+2022-09-06 09:23:05 - ProcessKill 4832
+2022-09-06 09:23:06 - Found child process: 3120 Name: conhost.exe
+2022-09-06 09:23:06 - Found child process: 896 Name: node.exe
+2022-09-06 09:23:06 - Stopping process 3120
+2022-09-06 09:23:06 - Send SIGINT 3120
+2022-09-06 09:23:06 - SIGINT to 3120 failed - Killing as fallback
+2022-09-06 09:23:06 - Stopping process 896
+2022-09-06 09:23:06 - Send SIGINT 896
+2022-09-06 09:23:06 - SIGINT to 896 failed - Killing as fallback
+2022-09-06 09:23:06 - Stopping process 4832
+2022-09-06 09:23:06 - Send SIGINT 4832
+2022-09-06 09:23:06 - SIGINT to 4832 failed - Killing as fallback
+2022-09-06 09:23:06 - Finished pasarelaagroapoyados.exe
+2022-09-06 09:23:21 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Administrator\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Administrator\Desktop\WebHookV2\PasarelaPagosAgro\index.js --log "PasarelaAgroapoyados wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2022-09-06 09:23:21 - Started 10064
+2022-09-06 09:53:15 - Stopping pasarelaagroapoyados.exe
+2022-09-06 09:53:15 - ProcessKill 10064
+2022-09-06 09:53:15 - Found child process: 3216 Name: conhost.exe
+2022-09-06 09:53:15 - Found child process: 5012 Name: node.exe
+2022-09-06 09:53:15 - Stopping process 3216
+2022-09-06 09:53:15 - Send SIGINT 3216
+2022-09-06 09:53:15 - SIGINT to 3216 failed - Killing as fallback
+2022-09-06 09:53:15 - Stopping process 5012
+2022-09-06 09:53:15 - Send SIGINT 5012
+2022-09-06 09:53:15 - SIGINT to 5012 failed - Killing as fallback
+2022-09-06 09:53:15 - Stopping process 10064
+2022-09-06 09:53:15 - Send SIGINT 10064
+2022-09-06 09:53:15 - SIGINT to 10064 failed - Killing as fallback
+2022-09-06 09:53:15 - Finished pasarelaagroapoyados.exe
+2022-09-06 09:55:33 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Administrator\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Administrator\Desktop\WebHookV2\PasarelaPagosAgro\index.js --log "PasarelaAgroapoyados wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2022-09-06 09:55:33 - Started 6080
+2022-10-06 15:05:05 - Stopping pasarelaagroapoyados.exe
+2022-10-06 15:05:05 - Finished pasarelaagroapoyados.exe

@@ -1,0 +1,10 @@
+2022-10-06 15:30:29 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Administrator\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Administrator\Desktop\WebHookV2\PasarelaPagosAgro\index.js --log "WebHookAgro wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2022-10-06 15:30:29 - Started 13104
+2022-10-06 16:20:57 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Administrator\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Administrator\Desktop\WebHookV2\PasarelaPagosAgro\index.js --log "WebHookAgro wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2022-10-06 16:20:57 - Started 11012
+2022-10-06 16:21:57 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Administrator\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Administrator\Desktop\WebHookV2\PasarelaPagosAgro\index.js --log "WebHookAgro wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2022-10-06 16:21:57 - Started 10784
+2022-10-06 16:22:17 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Administrator\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Administrator\Desktop\WebHookV2\PasarelaPagosAgro\index.js --log "WebHookAgro wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2022-10-06 16:22:17 - Started 22348
+2022-10-06 16:23:30 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Administrator\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file C:\Users\Administrator\Desktop\WebHookV2\PasarelaPagosAgro\index.js --log "WebHookAgro wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2022-10-06 16:23:30 - Started 6556
